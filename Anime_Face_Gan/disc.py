@@ -5,7 +5,7 @@ class Discriminator(nn.Module):
         super(Discriminator, self).__init__()
         self.main = nn.Sequential(
             # 1st layer
-            nn.Conv2d(1, 64, 4, 2, 1, bias=False),
+            nn.Conv2d(3, 64, 4, 2, 1, bias=False),
             nn.LeakyReLU(0.2, inplace=True),
             # 2nd layer
             nn.Conv2d(64, 64 * 2, 4, 2, 1, bias=False),

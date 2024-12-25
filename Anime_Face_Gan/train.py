@@ -6,14 +6,12 @@ from torchvision import transforms , datasets
 from disc import Discriminator
 from gen import Generator
 import torch.nn.functional as F
-import tqdm
+from tqdm import tqdm
 from torchvision.utils import save_image
 import os
 def train_discriminator(real_images, opt_d):
     # Clear discriminator gradients
     opt_d.zero_grad()
-
-    # Pass real images through discriminator
     real_preds = discriminator(real_images)
     real_targets = torch.ones(real_images.size(0), 1, device=device)
     real_loss = F.binary_cross_entropy(real_preds, real_targets)
@@ -63,18 +61,18 @@ def save_samples(index, latent_tensors,generator,sample_dir = "result"):
     
 trans = transforms.Compose([
                      transforms.Resize(64),
-                     transforms.CenterCrop(64) ,
+                     transforms.CenterCrop(64),
                      transforms.ToTensor(),
                      transforms.Normalize((0.5,), (0.5,))
                     ])
 
-dataset = datasets.ImageFolder(root='data\3\images', transform=trans)
+dataset = datasets.ImageFolder(root='data',transform=trans)
 
-batch_size = 64  # Adjust as needed
+batch_size = 256  # Adjust as needed
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=2)
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+print(device)
 discriminator = Discriminator()
 discriminator.to(device)
 
@@ -94,7 +92,9 @@ opt_g = torch.optim.Adam(generator.parameters(), lr=0.0002, betas=(0.5, 0.999))
 fixed_latent = torch.randn(64, 100, 1, 1, device=device)
 
 for epoch in range(100):
-    for real_images, _ in tqdm(dataloader):
+    for data in tqdm(dataloader):
+        real_images = data[0]
+        real_images = real_images.to(device)
         # Train discriminator
         loss_d, real_score, fake_score = train_discriminator(real_images, opt_d)
         # Train generator
@@ -111,4 +111,5 @@ for epoch in range(100):
         epoch+1, 100, loss_g, loss_d, real_score, fake_score))
 
     # Save generated images
-    save_samples(epoch+1, fixed_latent, show=False)
+    save_samples(epoch+1, fixed_latent,generator)
+torch.save(generator.state_dict(),'weights/anime_gen.pt')
