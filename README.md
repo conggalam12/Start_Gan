@@ -1,2 +1,2 @@
 # Start_Gan
-Start Learn From Gan
+Example project for GAN
