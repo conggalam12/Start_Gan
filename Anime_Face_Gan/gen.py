@@ -1,5 +1,9 @@
 import torch.nn as nn
-
+import torch
+from torchvision.utils import save_image
+import torchvision.transforms as transforms
+from PIL import Image
+import numpy as np
 class Generator(nn.Module):
     def __init__(self):
         super(Generator, self).__init__()
@@ -27,3 +31,16 @@ class Generator(nn.Module):
 
     def forward(self, input):
         return self.main(input)
+    
+
+if __name__ == "__main__":
+    model = Generator()
+    model.load_state_dict(torch.load(r'C:\Users\cong_nguyen\Documents\Python\Start_Gan\Anime_Face_Gan\weights\anime_gen.pt',weights_only=True,map_location="cpu"))
+    model.eval()
+    sample_input = torch.rand(1,100,1,1)
+    output = model(sample_input)
+    output = output*0.5 + 0.5
+    output = output.squeeze(0)
+    transform = transforms.ToPILImage()
+    image = transform(output)
+    image.save(r"C:\Users\cong_nguyen\Documents\Python\Start_Gan\Anime_Face_Gan\result\demo.jpg")
