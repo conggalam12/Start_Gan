@@ -43,4 +43,4 @@ if __name__ == "__main__":
     output = output.squeeze(0)
     transform = transforms.ToPILImage()
     image = transform(output)
-    image.save(r"C:\Users\cong_nguyen\Documents\Python\Start_Gan\Anime_Face_Gan\result\demo.jpg")
+    image.save(r"C:\Users\cong_nguyen\Documents\Python\Start_Gan\Anime_Face_Gan\result\demo3.jpg")
