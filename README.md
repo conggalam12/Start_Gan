@@ -4,7 +4,7 @@
 
 ### Take input
 ```
-python gen.py
+python Anime_Face_Gan/gen.py
 ```
 ### Result
 ![img2](https://github.com/conggalam12/Start_Gan/blob/main/Anime_Face_Gan/result/demo.jpg)![img3](https://github.com/conggalam12/Start_Gan/blob/main/Anime_Face_Gan/result/demo2.jpg) ![img4](https://github.com/conggalam12/Start_Gan/blob/main/Anime_Face_Gan/result/demo.jpg)
